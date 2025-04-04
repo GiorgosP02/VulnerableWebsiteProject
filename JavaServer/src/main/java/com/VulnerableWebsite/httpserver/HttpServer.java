@@ -16,6 +16,7 @@ import java.sql.Connection;
  * Driver Class for the Http Server
  *
  */
+// I just changed something (testing commit functionality)
 public class HttpServer {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HttpServer.class);
