@@ -140,7 +140,35 @@ public class HttpParser {
     }
 
     private void parseBody(InputStreamReader reader, HttpRequest request) {
+<<<<<<< HEAD
 
+=======
+        try {
+            // Determine if there's a body based on Content-Length
+            String contentLengthHeader = request.getHeader("Content-Length");
+            int contentLength = (contentLengthHeader != null) ? Integer.parseInt(contentLengthHeader) : 0;
+
+            if (contentLength <= 0) {
+                LOGGER.debug("No body in request. Skipping body parsing.");
+                return; // Exit early if no body is expected
+            }
+
+            StringBuilder requestBody = new StringBuilder();
+            char[] buffer = new char[contentLength]; // Read exactly the expected amount
+            int bytesRead = reader.read(buffer, 0, contentLength);
+
+            if (bytesRead > 0) {
+                requestBody.append(buffer, 0, bytesRead);
+                request.setBody(requestBody.toString());
+                LOGGER.debug("Parsed Request Body: {}", requestBody);
+            }
+
+        } catch (IOException e) {
+            LOGGER.error("Error parsing request body", e);
+        } catch (NumberFormatException e) {
+            LOGGER.warn("Invalid Content-Length value. Skipping body parsing.");
+        }
+>>>>>>> master
     }
 
 }

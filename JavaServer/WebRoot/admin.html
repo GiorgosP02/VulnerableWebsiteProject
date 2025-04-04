@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+<h2>Welcome to the Admin Dashboard</h2>
+<h3>Create new user</h3>
+<form id="userCreationForm" action="/createUser" method="POST">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="text" id="password" name="password" required> <!-- Vulnerability ID 3 - Password being displayed without another option -->
+    <br>
+    <label>Give admin privileges?</label>
+    <input type="radio" class="admin_privileges" name="admin_privileges" value="Yes">Yes</input>
+    <input type="radio" class="admin_privileges" name="admin_privileges" value="No" checked>No</input>
+    <br>
+    <button type="submit">Create user</button>
+</form>
+</body>
+</html>

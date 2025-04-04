@@ -123,17 +123,35 @@ public class HttpConnectionWorkerThread extends Thread {
                 String username = loginQuery.split("&")[0].split("=")[1].replace("+", " ");
                 String password = loginQuery.split("&")[1].split("=")[1];
 
+<<<<<<< HEAD
                 String authenticatedUser = UserAuthenticator.authenticateUser(username, password);
+=======
+                String authenticatedUser = UserAccountManager.authenticateUser(username, password);
+>>>>>>> master
 
                 HttpResponse.Builder responseBuilder = new HttpResponse.Builder()
                         .statusCode(authenticatedUser != null ? HttpStatusCode.OK : HttpStatusCode.CLIENT_ERROR_403_FORBIDDEN);
 
+<<<<<<< HEAD
                 if (authenticatedUser != null) {
                     String sessionToken = authenticatedUser + "123"; // Insecure session token
                     responseBuilder.addHeader("Set-Cookie", "session=" + sessionToken + "; Path=/");
                 }
 
                 String htmlContent = LoginHandler.generateHtml(authenticatedUser);
+=======
+                boolean is_admin = false;
+
+                if (authenticatedUser != null) {
+                    String sessionToken = authenticatedUser + "123"; // Insecure session token
+                    responseBuilder.addHeader("Set-Cookie", "session=" + sessionToken + "; Path=/");
+                    if (authenticatedUser.endsWith("1"))
+                        is_admin = true;
+                    authenticatedUser = authenticatedUser.substring(0, authenticatedUser.length() - 1); // Shaves off role_id
+                }
+
+                String htmlContent = LoginHandler.generateHtml(authenticatedUser, is_admin);
+>>>>>>> master
                 byte[] messageBody = htmlContent.getBytes(StandardCharsets.UTF_8);
 
                 return responseBuilder
@@ -171,6 +189,7 @@ public class HttpConnectionWorkerThread extends Thread {
         }
     }
 
+<<<<<<< HEAD
 
     private HttpResponse handlePostRequest(HttpRequest request) {
         if ("/addGame".equals(request.getRequestTarget())) {
@@ -181,6 +200,22 @@ public class HttpConnectionWorkerThread extends Thread {
                 if (!gameTitle.isEmpty()) {
                     GameRepository.addGame(gameTitle); // Insert into database
                 }
+=======
+    private HttpResponse handlePostRequest(HttpRequest request) {
+        if (request.getRequestTarget().startsWith("/createUser")) {
+            try {
+            //    String requestBody = new String(request.getMessageBody(), StandardCharsets.UTF_8);
+                String[] parts = request.getBody().split("[=\\&]");
+                String username = parts.length > 1 ? parts[1] : "";
+                String password = parts.length > 3 ? parts[3] : "";
+                String is_admin = parts.length > 5 ? parts[5] : "";
+
+                // Vulnerability ID 3 - Business logic: Overreliance on client-side controls
+                if (!username.isEmpty() && !password.isEmpty() && !is_admin.isEmpty())
+                    UserAccountManager.createUser(username, password, is_admin);
+                else if (!username.isEmpty() && !password.isEmpty())
+                    UserAccountManager.createUser(username, password);
+>>>>>>> master
 
                 // Redirect back to the game list page
                 return new HttpResponse.Builder()

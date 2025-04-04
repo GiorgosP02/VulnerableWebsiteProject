@@ -11,8 +11,14 @@ public class HttpRequest extends HttpMessage{
     private HttpMethod method;
     private String requestTarget;
     private String originalHttpVersion; // literal from the request
+<<<<<<< HEAD
     private String queryString;
     private HttpVersion bestCompatibleHttpVersion;
+=======
+    //private String queryString;
+    private HttpVersion bestCompatibleHttpVersion;
+    private String body;
+>>>>>>> master
 
     HttpRequest() {
     }
@@ -33,7 +39,19 @@ public class HttpRequest extends HttpMessage{
         return originalHttpVersion;
     }
 
+<<<<<<< HEAD
     public String getQueryParam(String key) {
+=======
+    public String getBody() {
+        return body;
+    }
+
+    void setBody(String body) {
+        this.body = body;
+    }
+
+    /*public String getQueryParam(String key) {
+>>>>>>> master
         if (requestTarget == null || requestTarget.isEmpty()) {
             return null;
         }
@@ -46,7 +64,11 @@ public class HttpRequest extends HttpMessage{
             }
         }
         return queryParams.get(key);
+<<<<<<< HEAD
     }
+=======
+    }*/
+>>>>>>> master
 
     void setMethod(String methodName) throws HttpParsingException {
         for (HttpMethod method : HttpMethod.values()) {
